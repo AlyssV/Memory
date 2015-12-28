@@ -29,11 +29,13 @@ public void setProgressBar_tmp(ProgressBar bar_tmp){
         progressStatus = 60;
         return_stat=60;
         block_tmp=0;
+
     }
 
 
     public void launch() {
         // startProgress();
+
         new Thread(new Timer()).start();
     }
 

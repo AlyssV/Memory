@@ -92,6 +92,7 @@ public class JeuView extends SurfaceView implements SurfaceHolder.Callback, Runn
         static int score_fin=0;
     static  int perdu = 0;
     static  int gagner = 0;
+    static int again =0;
 
 
         private long duree = 30000;
@@ -299,9 +300,27 @@ public class JeuView extends SurfaceView implements SurfaceHolder.Callback, Runn
         reloadcarte();
         setScore();
         if(perdu==1){
+            //Thread.currentThread().interrupt();
             cpt_click=0;
             cpt_click2=0;
+            stat.block(0);
 
+            paint = new Paint();
+            paint.setColor(0xff0000);
+
+            paint.setDither(true);
+            paint.setColor(0xFFFFFF00);
+            paint.setStyle(Paint.Style.STROKE);
+            paint.setStrokeJoin(Paint.Join.ROUND);
+            paint.setStrokeCap(Paint.Cap.ROUND);
+            paint.setStrokeWidth(3);
+            paint.setTextAlign(Paint.Align.LEFT);
+            carte           = new int[carteHeight][carteWidth];
+            loadlevel();
+            carteTopAnchor  = (getHeight()- carteHeight*carteTileSize+550)/2;
+            carteLeftAnchor = (getWidth()- carteWidth*carteTileSize-150)/2;
+
+            perdu=0;
         }
 
     }
@@ -472,14 +491,14 @@ public class JeuView extends SurfaceView implements SurfaceHolder.Callback, Runn
             int i=0;
             canvas.drawRGB(255, 255, 255);
             paintfond(canvas);
-            if (cpt_win==10) {
+            if (cpt_win==1) {
                 stat.block(1);
                // paintcarte(canvas);
                 //paintscore(canvas);
                 paintwin(canvas);
                 paintscore_finale(canvas);
-                in = false ;
                 gagner=1;
+                perdu=1;
 
             } else if (score==0 || stat.status_time()<=0) {
                 paintcarte(canvas);

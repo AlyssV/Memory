@@ -1,7 +1,0 @@
--Sauvegarde                                                                 |
--Refaire systeme de fin de jeu                                              |
--preference score                                                           |
--fix bug de réinitialisation pour rejouer                                   |       V
--Mettre en pause le timer quand on est pas sur le jeu                       |       V
--faire en sorte que la musique continue après la première vue               |       V
--fix bug thread si sort de l'appli et revient                               |       V

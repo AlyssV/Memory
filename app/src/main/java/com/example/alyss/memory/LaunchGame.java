@@ -58,6 +58,7 @@ public class LaunchGame extends Activity {
                  savePreferences("score", "" + JeuView.score_fin);
 
                 }
+                progressBar.setProgress(60);
 
                 time.init();
                 mjeu.reload();
@@ -75,6 +76,11 @@ public class LaunchGame extends Activity {
         //  backgroundMusic.pause();
         // mView.onPause();
            MainActivity.backgroundMusic.pause();
+
+           if(JeuView.gagner==1 && Integer.parseInt(loadSavedPreferences())<JeuView.score_fin){
+               savePreferences("score", "" + JeuView.score_fin);
+
+           }
 
     }
 
