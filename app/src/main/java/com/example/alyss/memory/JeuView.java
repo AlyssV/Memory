@@ -491,7 +491,7 @@ public class JeuView extends SurfaceView implements SurfaceHolder.Callback, Runn
             int i=0;
             canvas.drawRGB(255, 255, 255);
             paintfond(canvas);
-            if (cpt_win==1) {
+            if (cpt_win==10) {
                 stat.block(1);
                // paintcarte(canvas);
                 //paintscore(canvas);
