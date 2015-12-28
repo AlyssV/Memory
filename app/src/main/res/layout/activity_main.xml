@@ -12,35 +12,35 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Jouer"
         android:id="@+id/button_jouer"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
-        android:layout_centerVertical="true" />
+        android:layout_centerVertical="true"
+        android:background="@drawable/jouer"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Score"
         android:id="@+id/button_score"
         android:layout_below="@+id/button_jouer"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/score"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="About"
         android:id="@+id/button_about"
         android:layout_below="@+id/button_score"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/about"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Systeme"
         android:id="@+id/button_systeme"
         android:layout_below="@+id/button_about"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/systeme"/>
 
 
 </RelativeLayout>
