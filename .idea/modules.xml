@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/MemoryFin.iml" filepath="$PROJECT_DIR$/MemoryFin.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/memo fin.iml" filepath="$PROJECT_DIR$/memo fin.iml" />
     </modules>
   </component>
 </project>

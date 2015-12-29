@@ -21,7 +21,6 @@ public class LaunchGame extends Activity {
     static ProgressBar progressBar;
     Timer time = new Timer();
     MainActivity music = new MainActivity();
-    PreferenceScore sc  = new PreferenceScore();
 
     /** Called when the activity is first created. */
     @Override
