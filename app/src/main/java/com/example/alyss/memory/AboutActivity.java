@@ -16,7 +16,6 @@ public class AboutActivity extends AppCompatActivity {
         super.onPause();
         MainActivity.backgroundMusic.pause();
 
-        // mView.onPause();
     }
 
     @Override protected void onResume() {
@@ -24,7 +23,6 @@ public class AboutActivity extends AppCompatActivity {
         if(SystemeActivity.music_active==1) {
             MainActivity.backgroundMusic.start();
         }
-        // mView.onResume();
 
     }
 }

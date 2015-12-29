@@ -1,8 +1,6 @@
 package com.example.alyss.memory;
 
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.view.View;
+
 import android.widget.ProgressBar;
 
 /**
@@ -17,9 +15,7 @@ public class Timer  implements Runnable {
     static int return_stat = 60;
     static int block_tmp = 0;
 
-/**
-     * Called when the activity is first created.
-  */
+
 
 public void setProgressBar_tmp(ProgressBar bar_tmp){
     progressBar_tmp=bar_tmp;
@@ -34,25 +30,15 @@ public void setProgressBar_tmp(ProgressBar bar_tmp){
 
 
     public void launch() {
-        // startProgress();
 
         new Thread(new Timer()).start();
     }
 
 
-    public void destroy(){
-
-    }
 
     public void run() {
 
         while (progressStatus > 0) {
-
-            // Update the progress bar and display the current value in the text view
-
-
-            //textView.setText(progressStatus+"/"+progressBar.getMax());
-
 
             try {
                 Thread.sleep(1000);
