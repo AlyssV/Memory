@@ -1,12 +1,9 @@
 package com.example.alyss.memory;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Switch;
@@ -18,7 +15,6 @@ public class SystemeActivity extends AppCompatActivity {
     private Switch switch_music;
     static int music_active=0;
 
-    //SharedPreferences musicPref = getSharedPreferences("musicPref", MODE_PRIVATE);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,9 +25,7 @@ public class SystemeActivity extends AppCompatActivity {
         switch_music    = (Switch) findViewById(R.id.switch_music);
         final Button button_quitter = (Button) findViewById(R.id.button_quitter);
 
-        //set the switch to OFF
         switch_music.setChecked(MainActivity.musicPref.getBoolean(MainActivity.musicOnString, false));
-        //attach a listener to check for changes in state
         switch_music.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -47,7 +41,6 @@ public class SystemeActivity extends AppCompatActivity {
                     MainActivity.musicPrefEditor.apply();
                     music_active=0;
 
-                    //musicPref.getBoolean("musicOn", true);
                 }
             }
         });
@@ -65,14 +58,10 @@ public class SystemeActivity extends AppCompatActivity {
     }
 
 
-    int getMusic_active(){
-       return music_active;
-    }
     @Override protected void onPause() {
         super.onPause();
         MainActivity.backgroundMusic.pause();
 
-        // mView.onPause();
     }
 
     @Override protected void onResume() {
@@ -80,7 +69,6 @@ public class SystemeActivity extends AppCompatActivity {
         if(music_active==1) {
             MainActivity.backgroundMusic.start();
         }
-        // mView.onResume();
 
     }
 

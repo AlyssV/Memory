@@ -1,7 +1,6 @@
 package com.example.alyss.memory;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -13,14 +12,13 @@ import android.widget.ProgressBar;
 /**
  * Created by jazz on 16/11/15.
  */
-public class LaunchGame extends Activity {
+public class LaunchGame extends AppCompatActivity {
 
 
 
     static JeuView mjeu;
     static ProgressBar progressBar;
     Timer time = new Timer();
-    MainActivity music = new MainActivity();
 
     /** Called when the activity is first created. */
     @Override
@@ -29,7 +27,6 @@ public class LaunchGame extends Activity {
         super.onCreate(savedInstanceState);
         // charge le fichier main.xml comme vue de l'activit
         setContentView(R.layout.main);
-//        mjeu.initparameters();
 
 
         mjeu = (JeuView)findViewById(R.id.JeuView);
@@ -39,28 +36,31 @@ public class LaunchGame extends Activity {
         mjeu.setScore();
         // recuperation de la vue une voie cree  partir de son id
         progressBar = (ProgressBar) findViewById(R.id.pBAsync);
-        //textView = (TextView) findViewById(R.id.textView1);
-        // Start long running operation in a background thread
-
 
         time.setProgressBar_tmp(progressBar);
+
+
+        if (Integer.parseInt(loadSavedPreferences()) < JeuView.score_fin) {
+            savePreferences("score", "" + JeuView.score_fin);
+
+        }
 
         final Button rejouerButton = (Button) findViewById(R.id.button_rejouer);
         rejouerButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-             /*   Intent jeu = new Intent(LaunchGame.this, LaunchGame.class);
-                startActivity(jeu);*/
 
-                if(JeuView.gagner==1 && Integer.parseInt(loadSavedPreferences())<JeuView.score_fin){
-                 savePreferences("score", "" + JeuView.score_fin);
+                if (Integer.parseInt(loadSavedPreferences()) < JeuView.score_fin) {
+                    savePreferences("score", "" + JeuView.score_fin);
 
                 }
-                progressBar.setProgress(60);
 
-                time.init();
-                mjeu.reload();
+                if(JeuView.go==1) {
+                    progressBar.setProgress(60);
+                    time.init();
+                    mjeu.reload();
+                }
 
             }
         });
@@ -72,11 +72,9 @@ public class LaunchGame extends Activity {
          protected void onPause() {
         super.onPause();
         time.block(1);
-        //  backgroundMusic.pause();
-        // mView.onPause();
            MainActivity.backgroundMusic.pause();
 
-           if(JeuView.gagner==1 && Integer.parseInt(loadSavedPreferences())<JeuView.score_fin){
+           if(Integer.parseInt(loadSavedPreferences())<JeuView.score_fin){
                savePreferences("score", "" + JeuView.score_fin);
 
            }
@@ -93,8 +91,6 @@ public class LaunchGame extends Activity {
         if(SystemeActivity.music_active==1) {
             MainActivity.backgroundMusic.start();
         }
-        // backgroundMusic.start();
-        // mView.onResume();
 
     }
 
@@ -106,14 +102,13 @@ public class LaunchGame extends Activity {
         editor.commit();
     }
 
-    String loadSavedPreferences() {
+    public String loadSavedPreferences() {
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(this);
 
        String tmp = sharedPreferences.getString("score", "" + JeuView.score_fin);
 
         return tmp;
-        // txt.setText("Score\n" + string_tmp + "\n");
 
     }
 

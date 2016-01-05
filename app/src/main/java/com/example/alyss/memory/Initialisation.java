@@ -1,10 +1,8 @@
 package com.example.alyss.memory;
 
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Random;
 
 /**
  * Created by jazz on 09/11/15.

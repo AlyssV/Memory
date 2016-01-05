@@ -1,21 +1,17 @@
 package com.example.alyss.memory;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.os.CountDownTimer;
-import android.preference.PreferenceManager;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.widget.ProgressBar;
 import java.util.ArrayList;
 
 /**
@@ -26,20 +22,12 @@ import java.util.ArrayList;
 
 public class JeuView extends SurfaceView implements SurfaceHolder.Callback, Runnable {
 
-    //setting
-
-   /* SharedPreferences prefs = getString(String key, String defValue)
-    SharedPreferences.Editor editor = prefs.edit();*/
 
 
-
-   static ScoreActivity sc = new ScoreActivity();
 
     Initialisation init = new Initialisation();
     ArrayList liste = new ArrayList();
     ArrayList liste_memo = new ArrayList();
-    ProgressBar mProgressBar;
-    CountDownTimer mCountDownTimer;
     Timer stat = new Timer();
 
         // Declaration des images
@@ -90,16 +78,10 @@ public class JeuView extends SurfaceView implements SurfaceHolder.Callback, Runn
         static int lock=0;
         static int lock2=0;
         static int score_fin=0;
-    static  int perdu = 0;
-    static  int gagner = 0;
-    static int again =0;
-
-
-        private long duree = 30000;
-        static int cpt_time=0;
+        static  int perdu = 0;
+        static  int gagner = 0;
+        static int go=0;
         static int score=30;
-    static int cpt_thread=0;
-
 
         // constante modelisant les differentes types de cases
         static final int    CST_zone      = 3;
@@ -127,14 +109,6 @@ public class JeuView extends SurfaceView implements SurfaceHolder.Callback, Runn
                 {CST_vide, CST_zone, CST_zone,CST_zone,CST_zone}
         };
 
-    int [][] ref_init    = {
-
-            {CST_vide, CST_zone, CST_zone,CST_zone,CST_zone},
-            {CST_vide, CST_zone, CST_zone,CST_zone,CST_zone},
-            {CST_vide, CST_zone, CST_zone,CST_zone,CST_zone},
-            {CST_vide, CST_zone, CST_zone,CST_zone,CST_zone},
-            {CST_vide, CST_zone, CST_zone,CST_zone,CST_zone}
-    };
 
     int [][] ref2    = {
 
@@ -146,14 +120,7 @@ public class JeuView extends SurfaceView implements SurfaceHolder.Callback, Runn
     };
 
 
-    int [][] card_init    = {
 
-            {-1, 0, 0,0,0},
-            {-1, 0, 0,0,0},
-            {-1, 0, 0,0,0},
-            {-1, 0, 0,0,0},
-            {-1, 0, 0,0,0}
-    };
 
     int [][] card    = {
 
@@ -190,7 +157,6 @@ public class JeuView extends SurfaceView implements SurfaceHolder.Callback, Runn
         public JeuView(Context context, AttributeSet attrs) {
             super(context, attrs);
 
-            mProgressBar = (ProgressBar) findViewById(R.id.pBAsync);
 
             // permet d'ecouter les surfaceChanged, surfaceCreated, surfaceDestroyed
             holder = getHolder();
@@ -249,7 +215,7 @@ public class JeuView extends SurfaceView implements SurfaceHolder.Callback, Runn
                 }
             }
         }
-
+//reinitialise les tableau gerant les cartes
     public void reloadcarte() {
         ref[0][0]=CST_vide;
         for (int i=1; i< carteHeight; i++) {
@@ -261,7 +227,7 @@ public class JeuView extends SurfaceView implements SurfaceHolder.Callback, Runn
         }
     }
 
-
+        //attribue aléatoirement les cartes
         public void map_alea(){
         liste = init.init();
         int cpt=0;
@@ -274,11 +240,10 @@ public class JeuView extends SurfaceView implements SurfaceHolder.Callback, Runn
         }
     }
 
-
+    //permet de reinitialiser la view pour rejouer
     public void reload (){
 
         stat.block(2);
-    //    stat.block(0);
         currentStepZone = 0;
         currentStepZone2 = 0;
         xCard = 0;
@@ -293,14 +258,12 @@ public class JeuView extends SurfaceView implements SurfaceHolder.Callback, Runn
         carte_tmp=0;
         lock=0;
         lock2=0;
-      /*  ref=ref_init;
-        card=card_init;*/
+        gagner=0;
+
         map_alea();
-        //loadlevel();
         reloadcarte();
         setScore();
         if(perdu==1){
-            //Thread.currentThread().interrupt();
             cpt_click=0;
             cpt_click2=0;
             stat.block(0);
@@ -327,11 +290,11 @@ public class JeuView extends SurfaceView implements SurfaceHolder.Callback, Runn
 
         // initialisation du jeu
         public void initparameters() {
-            mProgressBar = (ProgressBar) findViewById(R.id.pBAsync);
            map_alea();
 
             paint = new Paint();
             paint.setColor(0xff0000);
+
 
             paint.setDither(true);
             paint.setColor(0xFFFFFF00);
@@ -353,7 +316,7 @@ public class JeuView extends SurfaceView implements SurfaceHolder.Callback, Runn
         }
 
 
-
+    //dessine le score de fin
      void paintscore_finale(Canvas canvas){
 
         Paint paint = new Paint();
@@ -370,17 +333,16 @@ public class JeuView extends SurfaceView implements SurfaceHolder.Callback, Runn
             canvas.drawText("Score : " + score_fin, carteLeftAnchor + (3 * carteTileSize), carteTopAnchor + -1 * (2 * carteTileSize), paint);
         }else if(getHeight()>=1800){
             paint.setTextSize(200);
-            canvas.drawText("" + score, carteLeftAnchor + (11 * carteTileSize) / 4, carteTopAnchor + -1 * (3 * carteTileSize) / 2, paint);
+            canvas.drawText("Score : " + score_fin, carteLeftAnchor + (11 * carteTileSize) / 4, carteTopAnchor + -1 * (3 * carteTileSize) / 2, paint);
 
         }else{
             paint.setTextSize(200);
-            canvas.drawText("" + score, carteLeftAnchor + (11 * carteTileSize) / 4, carteTopAnchor + -1 * (2 * carteTileSize) / 2, paint);
+            canvas.drawText("Score : " + score_fin, carteLeftAnchor + (11 * carteTileSize) / 4, carteTopAnchor + -1 * (2 * carteTileSize) / 2, paint);
 
         }
 
-        //sc.save();
     }
-
+    //dessine le score
     private void paintscore(Canvas canvas){
         Paint paint = new Paint();
         paint.setDither(true);
@@ -411,7 +373,7 @@ public class JeuView extends SurfaceView implements SurfaceHolder.Callback, Runn
 
             }
         }
-
+    //score a la fin du jeu
      int score_final(int temps,int nb_coups){
 
         score_fin=temps * nb_coups;
@@ -428,6 +390,7 @@ public class JeuView extends SurfaceView implements SurfaceHolder.Callback, Runn
             }
         }
 
+        // affiche le fond d'écran
         private void paintfond(Canvas canvas) {
             canvas.drawBitmap(fond, 0, 0, null);
         }
@@ -488,53 +451,38 @@ public class JeuView extends SurfaceView implements SurfaceHolder.Callback, Runn
 
         // dessin du jeu (fond uni, en fonction du jeu gagne ou pas dessin du plateau et du joueur des diamants et des fleches)
         private void nDraw(Canvas canvas) {
-            int i=0;
             canvas.drawRGB(255, 255, 255);
             paintfond(canvas);
-            if (cpt_win==10) {
+            if (cpt_win>=10) {
                 stat.block(1);
-               // paintcarte(canvas);
-                //paintscore(canvas);
                 paintwin(canvas);
                 paintscore_finale(canvas);
                 gagner=1;
                 perdu=1;
 
-            } else if (score==0 || stat.status_time()<=0) {
+            } else if (score<1 || stat.status_time()<1) {
                 paintcarte(canvas);
                 paintscore(canvas);
                 paintlose(canvas);
 
                 lock=1;
-               // in = false ;
                 perdu=1;
             } else{
 
                     paintcarte(canvas);
                     paintscore(canvas);
-                 //   System.out.println("time :"+stat.status_time());
 
-                    //paintPlayer(canvas);
-                    // paintdiamants(canvas);
-                    // paintarrow(canvas);
                 }
 
-            // Activation du thread secondaire (class TIME)
 
 
 
 
 
             }
+    //reinitialise le compteur de coups maximum
         public void setScore(){
         score=30;
-    }
-
-    public void stopThread(){
-        cv_thread.interrupt();
-        in = false ;
-
-
     }
 
 
@@ -544,6 +492,11 @@ public class JeuView extends SurfaceView implements SurfaceHolder.Callback, Runn
             initparameters();
             cv_thread   = new Thread(this);
             in = true;
+
+            if(gagner==1 || perdu==1){
+                stat.block(1);
+                go=1;
+            }
         }
 
         public void surfaceCreated(SurfaceHolder arg0) {
@@ -565,11 +518,10 @@ public class JeuView extends SurfaceView implements SurfaceHolder.Callback, Runn
             cpt_anime3=0;
             cpt_click=0;
             cpt_next=0;
-            cpt_win=0;
             carte_tmp=0;
             lock=0;
             lock2=0;
-          //  in = true;
+            go=0;
 
         }
 
@@ -588,7 +540,6 @@ public class JeuView extends SurfaceView implements SurfaceHolder.Callback, Runn
                     cv_thread.sleep(30);
 
                     if (currentStepZone<5) {
-                       // cv_thread.sleep(10);
 
                         currentStepZone = (currentStepZone + 1);
                         cpt_anime=1;
@@ -647,7 +598,6 @@ public class JeuView extends SurfaceView implements SurfaceHolder.Callback, Runn
                         score--;
                     } else
                     if (currentStepZone2<3 && cpt_anime2==1) {
-                        // cv_thread.sleep(10);
 
                         currentStepZone2 = (currentStepZone2 + 1);
                         cpt_anime3=1;
@@ -688,6 +638,7 @@ public class JeuView extends SurfaceView implements SurfaceHolder.Callback, Runn
 
                        if(card[j][i]==0 && lock==0 && lock2==0) {
                            lock=1;
+                           go=1;
                            currentStepZone = 0;
                            xCard = j;
                            yCard = i;
@@ -706,7 +657,10 @@ public class JeuView extends SurfaceView implements SurfaceHolder.Callback, Runn
                                    stat.block(0);
                                    cpt_click2=0;
                                }else {
-                                   stat.launch();
+                                        stat.stop();
+                                       stat.launch();
+
+
                                }
                            }
                        }
@@ -723,11 +677,9 @@ public class JeuView extends SurfaceView implements SurfaceHolder.Callback, Runn
             return super.onTouchEvent(event);
         }
 
+//vérifie si les cartes retournees sont similaires
+        public void check_click(){
 
-public void check_click(){
-/*for (int i=0;i<6;i++){
-    Log.i("liste_memo"," "+liste_memo.get(i));
-}*/
     if ((int)liste_memo.get(2)!=(int)liste_memo.get(5)){
         currentStepZone2 = 0;
         cpt_anime2=1;
